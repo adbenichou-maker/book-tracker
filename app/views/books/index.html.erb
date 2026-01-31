@@ -1,0 +1,58 @@
+<div class="container mt-4">
+  <h1 class="page-title">My Book Tracker</h1>
+  <div class="mb-4">
+    <%=link_to "Add a new book", search_books_path, class:"btn btn-primary" %>
+  </div>
+
+  <div class="form-container">
+    <h2 class="section-title">My Book Collection</h2>
+    <h3 class="mb-3">
+      Search a book in my collection
+    </h3>
+    <div class="search-form">
+      <%= form_with url: root_path, method: :get, local: true do |form| %>
+        <div class="input-group">
+            <%= text_field_tag :query, params[:query], placeholder: "Search by title or author...", class: "form-control search-input" %>
+            <div class="input-group-append">
+              <%= submit_tag "Search", class:"btn btn-primary" %>
+              <%= link_to root_path, class:"btn btn-outline-secondary ms-2" do %>
+              <i class="bi bi-arrow-clockwise"></i>Reset
+              <% end %>
+            </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="mt-4">
+      <ul class="list-unstyled">
+          <% @books.each do |book| %>
+          <%= turbo_frame_tag dom_id(book) do  %>
+            <li>
+              <div class="book-card">
+                <h4 class="book-title">
+                  <%= book.title %> <i><small class="text-muted">(<%= book.publication_year %>)</small></i>
+                </h4>
+                <p class="book-info">
+                  by <%= book.author %>
+                </p>
+                <p class="book-info">
+                  ISBN: <%= book.isbn %>
+                </p>
+                <div class="book-actions">
+                  <%= form_with url: update_book_status_path(book), method: :patch, class:"form-inline" do |form| %>
+                    <div class="form-check form-switch">
+
+                    <%= check_box_tag :status, "Pending", book.status == "Read", class: "form-check-input", onchange: "this.form.requestSubmit()" %>
+                    <%= label_tag :status, book.status, class: "form-check-label" %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+                 </li>
+              <% end %>
+            <%= button_to "Delete", delete_book_path(book), method: :delete, data: { confirm: "Are you sure?" } , class: 'btn btn-danger btn-sm'%>
+          <% end %>
+
+      </ul>
+    </div>
+  </div>
+</div>
