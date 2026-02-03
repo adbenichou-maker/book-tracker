@@ -18,6 +18,45 @@ A Full Stack application that allows users to search for books using the Google 
 - **Database**: PostgreSQL
 - **External API**: Google Books API
 
+## API Usage
+
+This application uses the **Google Books API** to search for books. Here's what you need to know about the API usage:
+
+### Google Books API
+
+- **Purpose**: The Google Books API is used to search for books by title, author, or other metadata.
+- **Endpoint**: https://www.googleapis.com/books/v1/volumes
+- **Parameters**:
+  - q: The search query (like the book title or author).
+  - maxResults: The maximum number of results to return (default is 15 in this app).
+  - key: Your Google Books API key.
+
+### API Key
+
+- **Requirement**: To use the Google Books API, you need an API key.
+- **Setup**:
+  1. Go to the Google Cloud Console: (https://console.cloud.google.com/).
+  2. Create a new project or select an existing one.
+  3. Enable the **Google Books API** for your project.
+  4. Create an API key under **APIs & Services > Credentials**.
+  5. Add the API key to your Rails application by replacing "YOUR_API_KEY" in the BooksController (see configuration instruction below).
+
+- **Configuration in the Application**:
+  - In the BooksController, replace the placeholder API key with your actual key in the search method, inside the url:
+
+  def search
+    @query = params[:query]
+    @books_from_api = []
+    if @query.present?
+      encoded_query = URI.encode_www_form_component(@query)
+      url = "https://www.googleapis.com/books/v1/volumes?q=#{encoded_query}&maxResults=15&key=YOUR_API_KEY"
+      response = URI.open(url).read
+      puts "API Response: #{response.inspect}"
+      @books_from_api = JSON.parse(response)["items"]
+    end
+  end
+
+
 ## Executing program
 
 ### Steps
