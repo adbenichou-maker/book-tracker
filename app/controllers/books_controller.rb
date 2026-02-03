@@ -88,7 +88,7 @@ require "json"
     @book = Book.find(params[:id])
     new_status = @book.status == "Pending" ? "Read" : "Pending"
     @book.update(status: new_status)
-    redirect_to root_path, notice: "Book status updated!"
+    redirect_to root_path
 
   end
   def destroy
