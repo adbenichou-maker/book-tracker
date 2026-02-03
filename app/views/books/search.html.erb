@@ -17,7 +17,7 @@
     <% end %>
 
 
-    <% if @books_from_api %>
+    <% if @books_from_api && @books_from_api.any? %>
       <h2 class="section-title mt-4"> Search Results </h2>
 
       <div class="row">
@@ -34,7 +34,7 @@
               <% end %>
 
               <% if book["volumeInfo"]["publishedDate"] %>
-                <p clss="book-info"><i><%= book["volumeInfo"]["publishedDate"][0..3] %></i></p>
+                <p class="book-info"><i><%= book["volumeInfo"]["publishedDate"][0..3] %></i></p>
               <% else %>
                 <p class="book-info"><i>Unknown Publication Year</i></p>
               <% end %>
@@ -43,6 +43,10 @@
             </div>
           </div>
         <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-info mt-4">
+        No books found for <i>"<%= @query %>"</i>. Please try a different search term.
       </div>
     <% end %>
 
