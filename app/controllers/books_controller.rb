@@ -23,12 +23,20 @@ require "json"
   def search
     @query = params[:query]
     @books_from_api = []
+    
     if @query.present?
-      encoded_query = URI.encode_www_form_component(@query)
-      url = "https://www.googleapis.com/books/v1/volumes?q=#{encoded_query}&maxResults=15&key=AIzaSyCsyUZ2H4hFoFy1Zsvcn6haztH8_CrLukY"
-      response = URI.open(url).read
-      puts "API Response: #{response.inspect}"
-      @books_from_api = JSON.parse(response)["items"]
+      begin
+        encoded_query = URI.encode_www_form_component(@query)
+        url = "https://www.googleapis.com/books/v1/volumes?q=#{encoded_query}&maxResults=15&key=AIzaSyCsyUZ2H4hFoFy1Zsvcn6haztH8_CrLukY"
+        response = URI.open(url).read
+        puts "API Response: #{response.inspect}"
+        if JSON.parse(response).key?("items")
+          @books_from_api = JSON.parse(response)["items"]
+        end
+      rescue StandardError => e
+        puts "Error fetching books from API: #{e.message}"
+        @books_from_api = []
+      end
     end
   end
 
