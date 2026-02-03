@@ -7,15 +7,9 @@ require "json"
     @books = Book.order(title: :asc)
 
     @query = params[:query]
-    @pending_only = params[:pending_only] == "1"
 
     if @query.present?
       @books = @books.where("LOWER(title) LIKE LOWER(?) OR LOWER(author) LIKE LOWER(?)", "%#{@query}%", "%#{@query}%")
-    end
-
-
-    if @pending_only
-      @books = @books.where(status: "Pending")
     end
 
   end

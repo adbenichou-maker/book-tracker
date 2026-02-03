@@ -16,38 +16,43 @@
       </div>
     <% end %>
 
+    <% if @query.present? %>
+      <% if @books_from_api && @books_from_api.any? %>
+        <h2 class="section-title mt-4"> Search Results </h2>
 
-    <% if @books_from_api && @books_from_api.any? %>
-      <h2 class="section-title mt-4"> Search Results </h2>
+        <div class="row">
+          <% @books_from_api.each do |book| %>
+            <div class="col-md-4 mb-4">
+              <div class="book-card-search">
+                <h4 class="book-title"><%= book["volumeInfo"]["title"] %></h4>
+                <% if book["volumeInfo"]["authors"] %>
+                  <p class="book-info">
+                    <%= book["volumeInfo"]["authors"].join(", ") %>
+                  </p>
+                <% else %>
+                  <p class="book-info">Unknown Author</p>
+                <% end %>
 
-      <div class="row">
-        <% @books_from_api.each do |book| %>
-          <div class="col-md-4 mb-4">
-            <div class="book-card-search">
-              <h4 class="book-title"><%= book["volumeInfo"]["title"] %></h4>
-              <% if book["volumeInfo"]["authors"] %>
-                <p class="book-info">
-                  <%= book["volumeInfo"]["authors"].join(", ") %>
-                </p>
-              <% else %>
-                <p class="book-info">Unknown Author</p>
-              <% end %>
+                <% if book["volumeInfo"]["publishedDate"] %>
+                  <p class="book-info"><i><%= book["volumeInfo"]["publishedDate"][0..3] %></i></p>
+                <% else %>
+                  <p class="book-info"><i>Unknown Publication Year</i></p>
+                <% end %>
 
-              <% if book["volumeInfo"]["publishedDate"] %>
-                <p class="book-info"><i><%= book["volumeInfo"]["publishedDate"][0..3] %></i></p>
-              <% else %>
-                <p class="book-info"><i>Unknown Publication Year</i></p>
-              <% end %>
-
-              <%= button_to "Add this book", new_book_path, method: :get, params: {api_book: book.to_json},  class: "btn btn-primary btn-sm"  %>
+                <%= button_to "Add this book", new_book_path, method: :get, params: {api_book: book.to_json},  class: "btn btn-primary btn-sm"  %>
+              </div>
             </div>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="alert alert-info mt-4">
-        No books found for <i>"<%= @query %>"</i>. Please try a different search term.
-      </div>
+          <% end %>
+        </div>
+      <% elsif @query == "" %>
+        <div class="alert alert-warning mt-4">
+          Please enter a search term to find books.
+        </div>
+      <% else %>
+        <div class="alert alert-info mt-4">
+          No books found for <i>"<%= @query %>"</i>. Please try a different search term.
+        </div>
+      <% end %>
     <% end %>
 
   </div>
