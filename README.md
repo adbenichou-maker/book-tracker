@@ -33,7 +33,8 @@ This application uses the **Google Books API** to search for books. Here's what 
 
 ### API Key
 
-- **Requirement**: To use the Google Books API, you need an API key.
+To use the Google Books API, you need an API key.
+
 - **Setup**:
 1. Go to the Google Cloud Console: (https://console.cloud.google.com/).
 2. Create a new project or select an existing one.
@@ -42,21 +43,9 @@ This application uses the **Google Books API** to search for books. Here's what 
 5. Add the API key to your Rails application by replacing "YOUR_API_KEY" in the BooksController (see configuration instruction below).
 
 - **Configuration in the Application**:
-  - In the BooksController, replace the placeholder API key with your actual key in the search method, inside the url:
-
-  def search
-    @query = params[:query]
-    @books_from_api = []
-    if @query.present?
-      encoded_query = URI.encode_www_form_component(@query)
-      url = "https://www.googleapis.com/books/v1/volumes?q=#{encoded_query}&maxResults=15&key=YOUR_API_KEY"
-      response = URI.open(url).read
-      puts "API Response: #{response.inspect}"
-      @books_from_api = JSON.parse(response)["items"]
-    end
-  end
-
-
+In the search method of the #BooksController, replace the placeholder API key with your actual key, inside the "url" variable: 
+url = "https://www.googleapis.com/books/v1/volumes?q=#{encoded_query}&maxResults=15&key=YOUR_API_KEY"
+  
 ## Executing program
 
 ### Steps
