@@ -11,12 +11,20 @@ A Full Stack application that allows users to search for books using the Google 
 - **Track Status**: Mark books as "Pending" or "Read".
 - **Manage Collection**: Delete unwanted books in your collection.
 
-#### Technical stacks
+### Technical stacks
 
 - **Frontend**: HTML5, CSS3, Bootstrap
 - **Backend**: Ruby on Rails
 - **Database**: PostgreSQL
 - **External API**: Google Books API
+
+### Versions
+
+- Ruby: 3.3.5
+- Rails: 7.1.6
+- Bundler: 2.7.2
+- PostgreSQL: 18.0
+
 
 ## API Usage
 
